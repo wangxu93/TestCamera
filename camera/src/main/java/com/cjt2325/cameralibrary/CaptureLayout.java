@@ -172,9 +172,23 @@ public class CaptureLayout extends RelativeLayout {
             }
 
             @Override
-            public void recordError() {
+            public void recordError(String str) {
                 if (captureLisenter != null) {
-                    captureLisenter.recordError();
+                    captureLisenter.recordError(str);
+                }
+            }
+
+            @Override
+            public void onlyTakePicturesToast() {
+                if (captureLisenter != null) {
+                    captureLisenter.onlyTakePicturesToast();
+                }
+            }
+
+            @Override
+            public void onlyRecordToast() {
+                if (captureLisenter != null) {
+                    captureLisenter.onlyRecordToast();
                 }
             }
         });

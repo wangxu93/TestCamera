@@ -177,8 +177,8 @@ public class CaptureButton extends View {
                 state = STATE_PRESS;        //修改当前状态为点击按下
 
                 //判断按钮状态是否为可录制状态
-                if ((button_state == BUTTON_STATE_ONLY_RECORDER || button_state == BUTTON_STATE_BOTH))
-                    postDelayed(longPressRunnable, 200);    //同时延长500启动长按后处理的逻辑Runnable
+//                if ((button_state == BUTTON_STATE_ONLY_RECORDER || button_state == BUTTON_STATE_BOTH))
+                    postDelayed(longPressRunnable, 200);    //同时延长200启动长按后处理的逻辑Runnable
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (captureLisenter != null
@@ -222,7 +222,9 @@ public class CaptureButton extends View {
     private void recordEnd() {
         if (captureLisenter != null) {
             if (recorded_time < min_duration) {
-                captureLisenter.recordShort(recorded_time);//回调录制时间过短
+                if (button_state != BUTTON_STATE_ONLY_CAPTURE) {  //仅为拍照模式的时候不处理
+                    captureLisenter.recordShort(recorded_time);//回调录制时间过短
+                }
             }else
                 captureLisenter.recordEnd(recorded_time);  //回调录制结束
         }
@@ -337,22 +339,41 @@ public class CaptureButton extends View {
         @Override
         public void run() {
             state = STATE_LONG_PRESS;   //如果按下后经过500毫秒则会修改当前状态为长按状态
-            //没有录制权限
-            if (CheckPermission.getRecordState() != CheckPermission.STATE_SUCCESS) {
+            if (button_state == JCameraView.BUTTON_STATE_BOTH || button_state == JCameraView.BUTTON_STATE_ONLY_RECORDER) {
+                //没有录制权限
+                int recordState = CheckPermission.getRecordState();
+                if (recordState != CheckPermission.STATE_SUCCESS) {
+                    state = STATE_IDLE;
+                    if (captureLisenter != null) {
+                        String tag = getErrorType(recordState);
+                        captureLisenter.recordError(tag);
+                        return;
+                    }
+                }
+                //启动按钮动画，外圆变大，内圆缩小
+                startRecordAnimation(
+                        button_outside_radius,
+                        button_outside_radius + outside_add_size,
+                        button_inside_radius,
+                        button_inside_radius - inside_reduce_size
+                );
+            }else{
                 state = STATE_IDLE;
                 if (captureLisenter != null) {
-                    captureLisenter.recordError();
-                    return;
+                    captureLisenter.onlyTakePicturesToast();
                 }
             }
-            //启动按钮动画，外圆变大，内圆缩小
-            startRecordAnimation(
-                    button_outside_radius,
-                    button_outside_radius + outside_add_size,
-                    button_inside_radius,
-                    button_inside_radius - inside_reduce_size
-            );
+
         }
+    }
+
+    private String getErrorType(int recordState) {
+        if (recordState == CheckPermission.STATE_RECORDING) {
+            return "录音机被占用";
+        }else if(recordState == CheckPermission.STATE_NO_PERMISSION){
+            return "录音不能进入初始化";
+        }
+        return "未知错误";
     }
 
     /**************************************************

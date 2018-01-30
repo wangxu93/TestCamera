@@ -16,5 +16,9 @@ public interface CaptureListener {
 
     void recordZoom(float zoom);
 
-    void recordError();
+    void recordError(String str);
+
+    void onlyTakePicturesToast();
+
+    void onlyRecordToast();
 }

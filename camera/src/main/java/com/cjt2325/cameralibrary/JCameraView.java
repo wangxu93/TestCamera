@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
@@ -215,9 +216,28 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             }
 
             @Override
-            public void recordError() {
+            public void recordError(final String str) {
                 if (errorLisenter != null) {
-                    errorLisenter.AudioPermissionError();
+                    post(new Runnable() {
+                        @Override
+                        public void run() {
+                            errorLisenter.AudioPermissionError(str);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onlyTakePicturesToast() {
+                if (errorLisenter != null) {
+                    errorLisenter.singerOptartionToast();
+                }
+            }
+
+            @Override
+            public void onlyRecordToast() {
+                if (errorLisenter != null) {
+                    errorLisenter.singerOptartionToast();
                 }
             }
         });
@@ -406,7 +426,18 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     //设置CaptureButton功能（拍照和录像）
     public void setFeatures(int state) {
+        changeShowStyleForState(state);
         this.mCaptureLayout.setButtonFeatures(state);
+    }
+
+    private void changeShowStyleForState(int state) {
+        if (state == BUTTON_STATE_ONLY_CAPTURE) {
+            mCaptureLayout.setTextWithAnimation("轻触拍照");
+        }else if(state == BUTTON_STATE_ONLY_RECORDER){
+            mCaptureLayout.setTextWithAnimation("按住录像");
+        }else if(state == BUTTON_STATE_BOTH){
+            mCaptureLayout.setTextWithAnimation("轻触拍照，按住录像");
+        }
     }
 
     //设置录制质量
@@ -528,7 +559,6 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                         mMediaPlayer.reset();
                     }
                     mMediaPlayer.setDataSource(url);
-                    mMediaPlayer.setSurface(mVideoView.getHolder().getSurface());
                     mMediaPlayer.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
                     mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     mMediaPlayer.setOnVideoSizeChangedListener(new MediaPlayer
@@ -543,6 +573,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                     mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
+                            mMediaPlayer.setSurface(mVideoView.getHolder().getSurface());
                             mMediaPlayer.start();
                         }
                     });
