@@ -275,11 +275,18 @@ public class CaptureLayout extends RelativeLayout {
         }
     }
 
-    public void setTextWithAnimation(String tip) {
+    /**
+     *
+     * @param tip
+     * @param isShowNow  是否立刻下是修改信息
+     */
+    public void setTextWithAnimation(String tip,boolean isShowNow) {
         txt_tip.setText(tip);
-        ObjectAnimator animator_txt_tip = ObjectAnimator.ofFloat(txt_tip, "alpha", 0f, 1f, 1f, 0f);
-        animator_txt_tip.setDuration(2500);
-        animator_txt_tip.start();
+        if (isShowNow) {
+            ObjectAnimator animator_txt_tip = ObjectAnimator.ofFloat(txt_tip, "alpha", 0f, 1f, 1f, 0f);
+            animator_txt_tip.setDuration(2500);
+            animator_txt_tip.start();
+        }
     }
 
     public void setDuration(int duration) {

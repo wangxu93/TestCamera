@@ -432,11 +432,11 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     private void changeShowStyleForState(int state) {
         if (state == BUTTON_STATE_ONLY_CAPTURE) {
-            mCaptureLayout.setTextWithAnimation("轻触拍照");
+            mCaptureLayout.setTextWithAnimation("轻触拍照",false);
         }else if(state == BUTTON_STATE_ONLY_RECORDER){
-            mCaptureLayout.setTextWithAnimation("按住录像");
+            mCaptureLayout.setTextWithAnimation("按住录像",false);
         }else if(state == BUTTON_STATE_BOTH){
-            mCaptureLayout.setTextWithAnimation("轻触拍照，按住录像");
+            mCaptureLayout.setTextWithAnimation("轻触拍照，按住录像",false);
         }
     }
 
