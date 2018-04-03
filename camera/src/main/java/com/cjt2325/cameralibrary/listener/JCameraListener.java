@@ -23,4 +23,6 @@ public interface JCameraListener {
 
     void captureSuccess(List<Uri> bitmaps);
 
+    void editImage(Bitmap bitmap);
+
 }

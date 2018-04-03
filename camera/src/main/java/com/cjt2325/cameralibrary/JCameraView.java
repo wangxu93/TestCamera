@@ -253,6 +253,13 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             public void confirm() {
                 machine.confirm();
             }
+
+            @Override
+            public void edit() {
+                if (jCameraLisenter != null) {
+                    jCameraLisenter.editImage(captureBitmap);
+                }
+            }
         });
         //退出
         mCaptureLayout.setReturnLisenter(new ReturnListener() {

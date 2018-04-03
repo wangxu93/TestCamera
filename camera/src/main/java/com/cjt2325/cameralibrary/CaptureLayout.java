@@ -37,6 +37,7 @@ public class CaptureLayout extends RelativeLayout {
     private CaptureListener captureLisenter;    //拍照按钮监听
     private TypeListener typeLisenter;          //拍照或录制后接结果按钮监听
     private ReturnListener returnListener;      //退出按钮监听
+    private View btnEdit;
 
     public void setTypeLisenter(TypeListener typeLisenter) {
         this.typeLisenter = typeLisenter;
@@ -98,6 +99,7 @@ public class CaptureLayout extends RelativeLayout {
         //默认Typebutton为隐藏
         btnCancel.setVisibility(INVISIBLE);
         btnConfim.setVisibility(INVISIBLE);
+        btnEdit.setVisibility(INVISIBLE);
     }
 
     public void startTypeBtnAnimator() {
@@ -137,6 +139,7 @@ public class CaptureLayout extends RelativeLayout {
                 if (captureLisenter != null) {
                     captureLisenter.takePictures();
                 }
+                showEditButtonForCapture();
             }
 
             @Override
@@ -144,6 +147,7 @@ public class CaptureLayout extends RelativeLayout {
                 if (captureLisenter != null) {
                     captureLisenter.recordShort(time);
                 }
+                showEditButtonForCapture();
                 startAlphaAnimation();
             }
 
@@ -220,6 +224,16 @@ public class CaptureLayout extends RelativeLayout {
             }
         });
 
+        btnEdit = rootView.findViewById(R.id.btnEdit);
+        btnEdit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (typeLisenter != null) {
+                    typeLisenter.edit();
+                }
+            }
+        });
+
         btnBack = (ImageView) rootView.findViewById(R.id.btnBack);
         btnBack.setBackgroundResource(R.drawable.icon_camera_back);
         btnBack.setOnClickListener(new OnClickListener() {
@@ -238,6 +252,14 @@ public class CaptureLayout extends RelativeLayout {
         addView(rootView);
     }
 
+    private void showEditButtonForCapture(){
+        btnEdit.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                btnEdit.setVisibility(VISIBLE);
+            }
+        },400);
+    }
     private void setButtonCancelStyle(int showMode){
         if (btnCancel == null) {
             return;
@@ -261,6 +283,7 @@ public class CaptureLayout extends RelativeLayout {
         btn_capture.resetState();
         btnCancel.setVisibility(INVISIBLE);
         btnConfim.setVisibility(INVISIBLE);
+        btnEdit.setVisibility(INVISIBLE);
         btn_capture.setVisibility(VISIBLE);
         btnBack.setVisibility(VISIBLE);
     }
