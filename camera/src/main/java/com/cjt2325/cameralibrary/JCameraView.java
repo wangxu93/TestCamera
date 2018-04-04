@@ -508,6 +508,25 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         mCaptureLayout.resetCaptureLayout();
     }
 
+    /**
+     * 外部设置bitmap
+     * @param bitmap
+     */
+    public void setBitmap(Bitmap bitmap,boolean showEdit){
+        if (captureBitmap != null) {
+            captureBitmap.recycle();
+            captureBitmap = null;
+        }
+        captureBitmap = bitmap;
+        mPhoto.setImageBitmap(bitmap);
+        mPhoto.setVisibility(VISIBLE);
+        mCaptureLayout.startAlphaAnimation();
+        mCaptureLayout.startTypeBtnAnimator();
+        if (showEdit) {
+            mCaptureLayout.showEditButtonForCapture();
+        }
+    }
+
     @Override
     public void showPicture(Bitmap bitmap, boolean isVertical) {
         if (isVertical) {

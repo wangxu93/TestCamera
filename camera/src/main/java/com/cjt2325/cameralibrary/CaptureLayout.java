@@ -252,7 +252,7 @@ public class CaptureLayout extends RelativeLayout {
         addView(rootView);
     }
 
-    private void showEditButtonForCapture(){
+    public void showEditButtonForCapture(){
         btnEdit.postDelayed(new Runnable() {
             @Override
             public void run() {
