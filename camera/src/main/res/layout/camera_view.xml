@@ -30,22 +30,22 @@
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.cjt2325.cameralibrary.CaptureLayout
+        <com.chaoxing.camera.CaptureLayout
             android:id="@+id/capture_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/gsSelectView"
             android:layout_marginBottom="50dp"/>
-        <com.cjt2325.cameralibrary.view.GlanceAndSelectImageView
+        <com.chaoxing.camera.view.GlanceAndSelectImageView
             android:id="@+id/gsSelectView"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="78dp"
             android:visibility="gone">
 
-        </com.cjt2325.cameralibrary.view.GlanceAndSelectImageView>
+        </com.chaoxing.camera.view.GlanceAndSelectImageView>
     </RelativeLayout>
-    <com.cjt2325.cameralibrary.FoucsView
+    <com.chaoxing.camera.FoucsView
         android:id="@+id/fouce_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.cjt2325.cameralibrary;
+package com.cjt2325.camera;
 
 import org.junit.Test;
 

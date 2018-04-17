@@ -32,7 +32,7 @@
            android:layout_centerVertical="true"
             android:background="@drawable/icon_camera_back" />
 
-        <com.cjt2325.cameralibrary.CaptureButton
+        <com.chaoxing.camera.CaptureButton
             android:id="@+id/captureBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -6,13 +6,20 @@
     android:layout_height="match_parent"
     tools:context="com.example.wangxu.testcamera.MainActivity">
 
-    <com.cjt2325.cameralibrary.JCameraView
+    <com.chaoxing.camera.JCameraView
         android:id="@+id/jcameraview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:duration_max="10000"
         app:iconMargin="20dp"
         app:iconSize="30dp"
-        app:iconSrc="@drawable/icon_camera_change"/>
+        app:iconSrc="@drawable/icon_camera_change">
 
+    </com.chaoxing.camera.JCameraView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 </android.support.constraint.ConstraintLayout>

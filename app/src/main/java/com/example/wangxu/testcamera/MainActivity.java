@@ -1,6 +1,7 @@
 package com.example.wangxu.testcamera;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -10,9 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cjt2325.cameralibrary.JCameraView;
-import com.cjt2325.cameralibrary.listener.ErrorListener;
-import com.cjt2325.cameralibrary.listener.JCameraListener;
+
+import com.chaoxing.camera.JCameraView;
+import com.chaoxing.camera.listener.ErrorListener;
+import com.chaoxing.camera.listener.JCameraListener;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -22,6 +24,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private JCameraView jCameraView;
     private String schemeSpecificPart;
+    private boolean resiveControl = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +75,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("CJT", "open camera error");
             }
             @Override
-            public void AudioPermissionError() {
+            public void AudioPermissionError(String str) {
                 //没有录取权限回调
                 Log.i("CJT", "AudioPermissionError");
+            }
+
+            @Override
+            public void singerOptartionToast() {
+                ToastUtils.showText(MainActivity.this,"不能拍照哦");
             }
         });
 
@@ -103,17 +111,33 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, bitmap.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
+
+            @Override
+            public void editImage(Bitmap bitmap) {
+                com.example.wangxu.testcamera.ToastUtils.showCenterText(MainActivity.this,bitmap.toString());
+            }
+        });
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resiveControl = false;
+                jCameraView.setBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.img_0),true);
+            }
         });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        jCameraView.onResume();
+        if (resiveControl) {
+            jCameraView.onResume();
+        }
     }
     @Override
     protected void onPause() {
         super.onPause();
-        jCameraView.onPause();
+        if (resiveControl) {
+            jCameraView.onPause();
+        }
     }
 }
