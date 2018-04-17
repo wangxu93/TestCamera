@@ -6,11 +6,14 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -38,6 +41,9 @@ public class CaptureLayout extends RelativeLayout {
     private TypeListener typeLisenter;          //拍照或录制后接结果按钮监听
     private ReturnListener returnListener;      //退出按钮监听
     private View btnEdit;
+    private View rlBtnContener1;
+    private View rlBtnContener;
+    private ImageView btnCancle1;
 
     public void setTypeLisenter(TypeListener typeLisenter) {
         this.typeLisenter = typeLisenter;
@@ -62,6 +68,7 @@ public class CaptureLayout extends RelativeLayout {
     private int button_size;
 
     private boolean isFirst = true;
+    private boolean showEditBtn = true;
 
     public CaptureLayout(Context context) {
         this(context, null);
@@ -101,20 +108,28 @@ public class CaptureLayout extends RelativeLayout {
         btnConfim.setVisibility(INVISIBLE);
         btnEdit.setVisibility(INVISIBLE);
     }
-
-    public void startTypeBtnAnimator() {
+    public void startTypeBtnAnimator(boolean showEditBtn) {
         //拍照录制结果后的动画
         btn_capture.setVisibility(INVISIBLE);
         btnBack.setVisibility(INVISIBLE);
         btnCancel.setVisibility(VISIBLE);
         btnConfim.setVisibility(VISIBLE);
+
         btnCancel.setClickable(false);
         btnConfim.setClickable(false);
         ObjectAnimator animator_cancel = ObjectAnimator.ofFloat(btnCancel, "translationX", layout_width / 4, 0);
         ObjectAnimator animator_confirm = ObjectAnimator.ofFloat(btnConfim, "translationX", -layout_width / 4, 0);
+        ObjectAnimator animator_edit = ObjectAnimator.ofFloat(btnEdit, "alpha", 0f, 1f);
 
         AnimatorSet set = new AnimatorSet();
-        set.playTogether(animator_cancel, animator_confirm);
+        if (showEditBtn) {
+            btnEdit.setVisibility(VISIBLE);
+            set.playTogether(animator_cancel, animator_confirm,animator_edit);
+        }else{
+            btnEdit.setVisibility(INVISIBLE);
+            set.playTogether(animator_cancel, animator_confirm);
+        }
+
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -139,7 +154,6 @@ public class CaptureLayout extends RelativeLayout {
                 if (captureLisenter != null) {
                     captureLisenter.takePictures();
                 }
-                showEditButtonForCapture();
             }
 
             @Override
@@ -147,7 +161,6 @@ public class CaptureLayout extends RelativeLayout {
                 if (captureLisenter != null) {
                     captureLisenter.recordShort(time);
                 }
-                showEditButtonForCapture();
                 startAlphaAnimation();
             }
 
@@ -165,7 +178,7 @@ public class CaptureLayout extends RelativeLayout {
                     captureLisenter.recordEnd(time);
                 }
                 startAlphaAnimation();
-                startTypeBtnAnimator();
+                startTypeBtnAnimator(false);
             }
 
             @Override
@@ -252,14 +265,6 @@ public class CaptureLayout extends RelativeLayout {
         addView(rootView);
     }
 
-    public void showEditButtonForCapture(){
-        btnEdit.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                btnEdit.setVisibility(VISIBLE);
-            }
-        },400);
-    }
     private void setButtonCancelStyle(int showMode){
         if (btnCancel == null) {
             return;

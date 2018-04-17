@@ -521,10 +521,12 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         mPhoto.setImageBitmap(bitmap);
         mPhoto.setVisibility(VISIBLE);
         mCaptureLayout.startAlphaAnimation();
-        mCaptureLayout.startTypeBtnAnimator();
-        if (showEdit) {
-            mCaptureLayout.showEditButtonForCapture();
-        }
+        mPhoto.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mCaptureLayout.startTypeBtnAnimator(true);
+            }
+        },200);
     }
 
     @Override
@@ -538,7 +540,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         mPhoto.setImageBitmap(bitmap);
         mPhoto.setVisibility(VISIBLE);
         mCaptureLayout.startAlphaAnimation();
-        mCaptureLayout.startTypeBtnAnimator();
+        mCaptureLayout.startTypeBtnAnimator(true);
         if (showMode == SHOW_MODE_MORE_IMAGE) {
             String imageFile = saveImageTempPath + getImageFileNameByData();
             boolean b = Utils.saveBitmap(bitmap, imageFile, Bitmap.CompressFormat.JPEG, 100);
