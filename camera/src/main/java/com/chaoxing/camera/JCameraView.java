@@ -24,7 +24,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
-
 import com.chaoxing.camera.listener.CaptureListener;
 import com.chaoxing.camera.listener.ErrorListener;
 import com.chaoxing.camera.listener.JCameraListener;
@@ -56,7 +55,8 @@ import java.util.Date;
  */
 public class JCameraView extends FrameLayout implements CameraInterface.CameraOpenOverCallback, SurfaceHolder
         .Callback, CameraView {
-//    private static final String TAG = "JCameraView";
+    private static final String TAG = "JCameraView";
+    public static int ZOOM_CLASS = 1;
 
     //Camera状态机
     private CameraMachine machine;
@@ -110,15 +110,15 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     private int iconSrc = 0;        //图标资源
     private int duration = 0;       //录制时间
 
-    //缩放梯度
-    private int zoomGradient = 0;
+    //屏幕相对于相机缩放最大值的倍数
+    public static int ZOOM_GRADIENT = 1;
 
     private boolean firstTouch = true;
     private float firstTouchLength = 0;
     private int showMode = SHOW_MODE_DEFAULT;
     private GlanceAndSelectImageView selectImageView;
     private String saveImageTempPath;
-    private String defaultFilePath = Environment.getExternalStorageDirectory() + File.separator +"tempImages"+File.separator;
+    private String defaultFilePath = Environment.getExternalStorageDirectory() + File.separator + "tempImages" + File.separator;
     private View rlBottonRoom;
 
 
@@ -151,8 +151,6 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 //        DisplayMetrics outMetrics = new DisplayMetrics();
 //        manager.getDefaultDisplay().getMetrics(outMetrics);
         layout_width = ScreenUtils.getScreenWidth(mContext);
-        zoomGradient = (int) (layout_width / 16f);
-        LogUtil.i("zoom = " + zoomGradient);
         machine = new CameraMachine(getContext(), this, this);
     }
 
@@ -302,6 +300,13 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     @Override
     public void cameraHasOpened() {
         CameraInterface.getInstance().doStartPreview(mVideoView.getHolder(), screenProp);
+        initZoomGradient();
+    }
+
+    private void initZoomGradient() {
+        double sqrt = Math.sqrt(Math.pow(ScreenUtils.getScreenHeight(mContext), 2) + Math.pow(ScreenUtils.getScreenWidth(mContext), 2));
+        int maxZoom = CameraInterface.getInstance().getMaxZoom();
+        ZOOM_GRADIENT = (int) (sqrt / maxZoom);
     }
 
     //生命周期onResume
@@ -376,7 +381,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                         firstTouchLength = result;
                         firstTouch = false;
                     }
-                    if ((int) (result - firstTouchLength) / zoomGradient != 0) {
+                    if (((int) (result - firstTouchLength) / ZOOM_GRADIENT) != 0) {
                         firstTouch = true;
                         machine.zoom(result - firstTouchLength, CameraInterface.TYPE_CAPTURE);
                     }
@@ -440,11 +445,11 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     private void changeShowStyleForState(int state) {
         if (state == BUTTON_STATE_ONLY_CAPTURE) {
-            mCaptureLayout.setTextWithAnimation("轻触拍照",false);
-        }else if(state == BUTTON_STATE_ONLY_RECORDER){
-            mCaptureLayout.setTextWithAnimation("按住录像",false);
-        }else if(state == BUTTON_STATE_BOTH){
-            mCaptureLayout.setTextWithAnimation("轻触拍照，按住录像",false);
+            mCaptureLayout.setTextWithAnimation("轻触拍照", false);
+        } else if (state == BUTTON_STATE_ONLY_RECORDER) {
+            mCaptureLayout.setTextWithAnimation("按住录像", false);
+        } else if (state == BUTTON_STATE_BOTH) {
+            mCaptureLayout.setTextWithAnimation("轻触拍照，按住录像", false);
         }
     }
 
@@ -493,10 +498,10 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                     if (showMode == SHOW_MODE_MORE_IMAGE) {
                         if (selectImageView.getAllImage().isEmpty()) {
                             jCameraLisenter.captureSuccess(captureBitmap);
-                        }else {
+                        } else {
                             jCameraLisenter.captureSuccess(selectImageView.getAllImage());
                         }
-                    }else{
+                    } else {
                         jCameraLisenter.captureSuccess(captureBitmap);
                     }
                 }
@@ -511,9 +516,10 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     /**
      * 外部设置bitmap
+     *
      * @param bitmap
      */
-    public void setBitmap(Bitmap bitmap,boolean showEdit){
+    public void setBitmap(Bitmap bitmap, boolean showEdit) {
         if (captureBitmap != null) {
             captureBitmap.recycle();
             captureBitmap = null;
@@ -527,7 +533,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             public void run() {
                 mCaptureLayout.startTypeBtnAnimator(true);
             }
-        },200);
+        }, 200);
     }
 
     @Override
@@ -548,23 +554,26 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             if (b) {
                 selectImageView.setVisibility(VISIBLE);
                 selectImageView.addImage(Uri.fromFile(new File(imageFile)));
-            }else{
-                ToastUtils.showShortText(mContext,"未知错误!");
+            } else {
+                ToastUtils.showShortText(mContext, "未知错误!");
             }
         }
     }
-    private String getImageFileNameByData(){
+
+    private String getImageFileNameByData() {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd HHmmss");
         return df.format(new Date()) + ".jpg";
     }
 
-    public void setShowMode(int showMode){
+    public void setShowMode(int showMode) {
         setShowMode(showMode, 0);
     }
-    public void setShowMode(int showMode,int maxCount){
-        setShowMode(showMode,defaultFilePath, maxCount);
+
+    public void setShowMode(int showMode, int maxCount) {
+        setShowMode(showMode, defaultFilePath, maxCount);
     }
-    public void setShowMode(int showMode,String tempImagePath,int maxCount){
+
+    public void setShowMode(int showMode, String tempImagePath, int maxCount) {
         this.showMode = showMode;
         saveImageTempPath = tempImagePath;
         selectImageView.setMaxCount(maxCount);
@@ -629,7 +638,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         mCaptureLayout.setTip(tip);
     }
 
-    public void setDuration(int duration){
+    public void setDuration(int duration) {
         this.duration = duration;
         if (mCaptureLayout != null) {
             mCaptureLayout.setDuration(duration);

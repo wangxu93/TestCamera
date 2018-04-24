@@ -50,7 +50,8 @@ import static android.graphics.Bitmap.createBitmap;
 @SuppressWarnings("deprecation")
 public class CameraInterface implements Camera.PreviewCallback {
 
-    private static final String TAG = "CJT";
+    private static final String TAG = "CameraInterface";
+    private static final int zoomClass = 2;
 
     private volatile static CameraInterface mCameraInterface;
 
@@ -201,6 +202,15 @@ public class CameraInterface implements Camera.PreviewCallback {
         }
     }
 
+    public int getMaxZoom(){
+        if (mCamera == null) {
+            return 0;
+        }
+        if (mParams == null) {
+            mParams = mCamera.getParameters();
+        }
+        return mParams.getMaxZoom();
+    }
 
     public void setZoom(float zoom, int type) {
         if (mCamera == null) {
@@ -209,7 +219,8 @@ public class CameraInterface implements Camera.PreviewCallback {
         if (mParams == null) {
             mParams = mCamera.getParameters();
         }
-        if (!mParams.isZoomSupported() || !mParams.isSmoothZoomSupported()) {
+
+        if (!mParams.isZoomSupported()) {
             return;
         }
         switch (type) {
@@ -219,12 +230,15 @@ public class CameraInterface implements Camera.PreviewCallback {
                     return;
                 }
                 if (zoom >= 0) {
-                    //每移动50个像素缩放一个级别
-                    int scaleRate = (int) (zoom / 40);
-                    if (scaleRate <= mParams.getMaxZoom() && scaleRate >= nowScaleRate && recordScleRate != scaleRate) {
-                        mParams.setZoom(scaleRate);
-                        mCamera.setParameters(mParams);
-                        recordScleRate = scaleRate;
+                    try {
+                        int scaleRate = (int) (zoom / JCameraView.ZOOM_GRADIENT * zoomClass);
+                        if (scaleRate <= mParams.getMaxZoom() && scaleRate >= nowScaleRate && recordScleRate != scaleRate) {
+                            mParams.setZoom(scaleRate);
+                            mCamera.setParameters(mParams);
+                            recordScleRate = scaleRate;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
                 break;
@@ -232,17 +246,20 @@ public class CameraInterface implements Camera.PreviewCallback {
                 if (isRecorder) {
                     return;
                 }
-                //每移动50个像素缩放一个级别
-                int scaleRate = (int) (zoom / 50);
-                if (scaleRate < mParams.getMaxZoom()) {
-                    nowScaleRate += scaleRate;
-                    if (nowScaleRate < 0) {
-                        nowScaleRate = 0;
-                    } else if (nowScaleRate > mParams.getMaxZoom()) {
-                        nowScaleRate = mParams.getMaxZoom();
+                try {
+                    int scaleRate = (int) (zoom / JCameraView.ZOOM_GRADIENT * zoomClass);
+                    if (scaleRate < mParams.getMaxZoom()) {
+                        nowScaleRate += scaleRate;
+                        if (nowScaleRate < 0) {
+                            nowScaleRate = 0;
+                        } else if (nowScaleRate > mParams.getMaxZoom()) {
+                            nowScaleRate = mParams.getMaxZoom();
+                        }
+                        mParams.setZoom(nowScaleRate);
+                        mCamera.setParameters(mParams);
                     }
-                    mParams.setZoom(nowScaleRate);
-                    mCamera.setParameters(mParams);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 LogUtil.i("setZoom = " + nowScaleRate);
                 break;
