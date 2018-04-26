@@ -312,17 +312,17 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     //生命周期onResume
     public void onResume() {
         LogUtil.i("JCameraView onResume");
-        resetState(TYPE_DEFAULT); //重置状态
+//        resetState(TYPE_DEFAULT); //重置状态
         CameraInterface.getInstance().registerSensorManager(mContext);
         CameraInterface.getInstance().setSwitchView(mSwitchCamera);
-        machine.start(mVideoView.getHolder(), screenProp);
+//        machine.start(mVideoView.getHolder(), screenProp);
     }
 
     //生命周期onPause
     public void onPause() {
         LogUtil.i("JCameraView onPause");
-        stopVideo();
-        resetState(TYPE_PICTURE);
+//        stopVideo();
+//        resetState(TYPE_PICTURE);
         CameraInterface.getInstance().isPreview(false);
         CameraInterface.getInstance().unregisterSensorManager(mContext);
     }
