@@ -364,7 +364,7 @@ public class CameraInterface implements Camera.PreviewCallback {
             try {
                 mParams = mCamera.getParameters();
                 Camera.Size previewSize = CameraParamUtil.getInstance().getPreviewSize(mParams
-                        .getSupportedPreviewSizes(), 1000, screenProp);
+                        .getSupportedPreviewSizes(), 1200, screenProp);
                 Camera.Size pictureSize = CameraParamUtil.getInstance().getPictureSize(mParams
                         .getSupportedPictureSizes(), 1200, screenProp);
 
@@ -398,6 +398,13 @@ public class CameraInterface implements Camera.PreviewCallback {
             }
         }
     }
+    public float getPreviewProp(){
+        if (preview_height == 0) {
+            return 0;
+        }
+        return (float) preview_width / (float) preview_height;
+    }
+
 
     /**
      * 停止预览

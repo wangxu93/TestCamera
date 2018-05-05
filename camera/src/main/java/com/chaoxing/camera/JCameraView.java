@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.VideoView;
@@ -301,6 +302,31 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     public void cameraHasOpened() {
         CameraInterface.getInstance().doStartPreview(mVideoView.getHolder(), screenProp);
         initZoomGradient();
+        setSuitableParams();
+    }
+
+    private void setSuitableParams() {
+        if (screenProp > 1.8) {
+            mVideoView.post(new Runnable() {
+                @Override
+                public void run() {
+                    float previewProp = CameraInterface.getInstance().getPreviewProp();
+                    if (previewProp == 0) {
+                        return;
+                    }
+                    int measuredHeight = mVideoView.getMeasuredHeight();
+                    float clacWidth = measuredHeight / previewProp;
+                    ViewGroup.LayoutParams layoutParams = mVideoView.getLayoutParams();
+                    if (layoutParams == null) {
+                        layoutParams = new ViewGroup.LayoutParams((int) clacWidth, measuredHeight);
+                    }
+                    if (clacWidth > 800) {
+                        layoutParams.width = (int) clacWidth;
+                    }
+                    mVideoView.setLayoutParams(layoutParams);
+                }
+            });
+        }
     }
 
     private void initZoomGradient() {
