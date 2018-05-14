@@ -305,43 +305,45 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     }
 
     private void setSuitableParams() {
-        if (screenProp > 1.8) {
-            float previewProp = CameraInterface.getInstance().getPreviewProp();
-            if (previewProp == 0 || mVideoView == null) {   //获取的size宽高比
-                return;
-            }
-            int measuredHeight = mVideoView.getMeasuredHeight();
-            int measuredWidth = mVideoView.getMeasuredWidth();
-            float clacWidth = measuredHeight / previewProp;   //计算出要显示的预览界面的宽度。
-            ViewGroup.LayoutParams layoutParams = mVideoView.getLayoutParams();
-            if (layoutParams == null) {
-                layoutParams = new ViewGroup.LayoutParams((int) clacWidth, measuredHeight);
-            }
-
-            ViewGroup.LayoutParams params = mPhoto.getLayoutParams();
-            if (params == null) {
-                params = new ViewGroup.LayoutParams((int) clacWidth, measuredHeight);
-            }
-            if (clacWidth > 800 && Math.abs(clacWidth - measuredWidth) > clacWidth * 0.1F) {  //计算的宽度大于 800 并且和显示正常的布局的误差超过10%
-                layoutParams.width = (int) clacWidth;
-                params.width = (int) clacWidth;
-            }
-
-
-            final ViewGroup.LayoutParams finalLayoutParams = layoutParams;
-            final ViewGroup.LayoutParams finalPhotoParams = params;
-            mVideoView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (mVideoView != null && finalLayoutParams != null) {
-                        mVideoView.setLayoutParams(finalLayoutParams);
-                    }
-                    if (mPhoto != null && finalPhotoParams != null) {
-                        mPhoto.setLayoutParams(finalPhotoParams);
-                    }
-                }
-            });
+        float previewProp = CameraInterface.getInstance().getPreviewProp();
+        if (previewProp == 0 || mVideoView == null) {   //获取的size宽高比
+            return;
         }
+        int measuredHeight = mVideoView.getMeasuredHeight();
+        int measuredWidth = mVideoView.getMeasuredWidth();
+        float clacWidth = measuredHeight / previewProp;   //计算出要显示的预览界面的宽度。
+        ViewGroup.LayoutParams layoutParams = mVideoView.getLayoutParams();
+        if (layoutParams == null) {
+            layoutParams = new ViewGroup.LayoutParams((int) clacWidth, measuredHeight);
+        }
+
+        ViewGroup.LayoutParams params = mPhoto.getLayoutParams();
+        if (params == null) {
+            params = new ViewGroup.LayoutParams((int) clacWidth, measuredHeight);
+        }
+
+        if (clacWidth > 800 && Math.abs(clacWidth - measuredWidth) > clacWidth * 0.1F) {  //计算的宽度大于 800 并且和显示正常的布局的误差超过10%
+            layoutParams.width = (int) clacWidth;
+            params.width = (int) clacWidth;
+        }else{
+            return;
+        }
+
+
+        final ViewGroup.LayoutParams finalLayoutParams = layoutParams;
+        final ViewGroup.LayoutParams finalPhotoParams = params;
+        mVideoView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mVideoView != null && finalLayoutParams != null) {
+                    mVideoView.setLayoutParams(finalLayoutParams);
+                }
+                if (mPhoto != null && finalPhotoParams != null) {
+                    mPhoto.setLayoutParams(finalPhotoParams);
+                }
+            }
+        });
+
     }
 
     private void initZoomGradient() {
