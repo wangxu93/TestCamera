@@ -119,12 +119,12 @@ public class CaptureLayout extends RelativeLayout {
 
         AnimatorSet set = new AnimatorSet();
         if (showEditBtn) {
-            btnEdit.setVisibility(VISIBLE);
-            set.playTogether(animator_cancel, animator_confirm,animator_edit);
+//            btnEdit.setVisibility(VISIBLE);
+//            set.playTogether(animator_cancel, animator_confirm,animator_edit);
         }else{
             btnEdit.setVisibility(INVISIBLE);
-            set.playTogether(animator_cancel, animator_confirm);
         }
+        set.playTogether(animator_cancel, animator_confirm);
 
         set.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -234,14 +234,14 @@ public class CaptureLayout extends RelativeLayout {
         });
 
         btnEdit = rootView.findViewById(R.id.btnEdit);
-        btnEdit.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (typeLisenter != null) {
-                    typeLisenter.edit();
-                }
-            }
-        });
+//        btnEdit.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (typeLisenter != null) {
+//                    typeLisenter.edit();
+//                }
+//            }
+//        });
 
         btnBack = (ImageView) rootView.findViewById(R.id.btnBack);
         btnBack.setBackgroundResource(R.drawable.icon_camera_back);
