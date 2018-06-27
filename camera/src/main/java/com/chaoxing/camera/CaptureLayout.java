@@ -111,31 +111,31 @@ public class CaptureLayout extends RelativeLayout {
         btnCancel.setVisibility(VISIBLE);
         btnConfim.setVisibility(VISIBLE);
 
-        btnCancel.setClickable(false);
-        btnConfim.setClickable(false);
-        ObjectAnimator animator_cancel = ObjectAnimator.ofFloat(btnCancel, "translationX", layout_width / 4, 0);
-        ObjectAnimator animator_confirm = ObjectAnimator.ofFloat(btnConfim, "translationX", -layout_width / 4, 0);
-        ObjectAnimator animator_edit = ObjectAnimator.ofFloat(btnEdit, "alpha", 0f, 1f);
-
-        AnimatorSet set = new AnimatorSet();
-        if (showEditBtn) {
-//            btnEdit.setVisibility(VISIBLE);
-//            set.playTogether(animator_cancel, animator_confirm,animator_edit);
-        }else{
-            btnEdit.setVisibility(INVISIBLE);
-        }
-        set.playTogether(animator_cancel, animator_confirm);
-
-        set.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                btnCancel.setClickable(true);
-                btnConfim.setClickable(true);
-            }
-        });
-        set.setDuration(200);
-        set.start();
+        btnCancel.setClickable(true);
+        btnConfim.setClickable(true);
+//        ObjectAnimator animator_cancel = ObjectAnimator.ofFloat(btnCancel, "translationX", layout_width / 4, 0);
+//        ObjectAnimator animator_confirm = ObjectAnimator.ofFloat(btnConfim, "translationX", -layout_width / 4, 0);
+//        ObjectAnimator animator_edit = ObjectAnimator.ofFloat(btnEdit, "alpha", 0f, 1f);
+//
+//        AnimatorSet set = new AnimatorSet();
+//        if (showEditBtn) {
+////            btnEdit.setVisibility(VISIBLE);
+////            set.playTogether(animator_cancel, animator_confirm,animator_edit);
+//        }else{
+//            btnEdit.setVisibility(INVISIBLE);
+//        }
+////        set.playTogether(animator_cancel, animator_confirm);
+//
+//        set.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                super.onAnimationEnd(animation);
+//                btnCancel.setClickable(true);
+//                btnConfim.setClickable(true);
+//            }
+//        });
+//        set.setDuration(200);
+//        set.start();
     }
 
 
