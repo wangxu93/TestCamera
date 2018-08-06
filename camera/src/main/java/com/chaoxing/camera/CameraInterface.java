@@ -393,7 +393,7 @@ public class CameraInterface implements Camera.PreviewCallback {
                 mCamera.startPreview();//启动浏览
                 isPreviewing = true;
                 Log.i(TAG, "=== Start Preview ===");
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
