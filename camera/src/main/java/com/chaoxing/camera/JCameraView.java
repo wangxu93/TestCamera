@@ -661,8 +661,12 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                     mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
-                            mMediaPlayer.setSurface(mVideoView.getHolder().getSurface());
-                            mMediaPlayer.start();
+                            try {
+                                mMediaPlayer.setSurface(mVideoView.getHolder().getSurface());
+                                mMediaPlayer.start();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     mMediaPlayer.setLooping(true);

@@ -53,6 +53,24 @@ public class CameraParamUtil {
         }
     }
 
+    public Camera.Size getVideoSize(List<Camera.Size> list, int minSize, float rate) {
+        Collections.sort(list, sizeComparator);
+        int i = 0;
+        for (Camera.Size s : list) {
+            int minSize_t = Math.min(s.height,s.width);
+            if ((minSize_t >= minSize) && equalRate(s, rate)) {
+                Log.i(TAG, "MakeSure Picture :w = " + s.width + " h = " + s.height);
+                break;
+            }
+            i++;
+        }
+        if (i == list.size()) {
+            return getBestSize(list, rate);
+        } else {
+            return list.get(i);
+        }
+    }
+
     public Camera.Size getPictureSize(List<Camera.Size> list, int th, float rate) {
         Collections.sort(list, sizeComparator);
         int i = 0;

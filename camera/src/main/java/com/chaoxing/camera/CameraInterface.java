@@ -546,13 +546,14 @@ public class CameraInterface implements Camera.PreviewCallback {
 
         Camera.Size videoSize;
         if (mParams.getSupportedVideoSizes() == null) {
-            videoSize = CameraParamUtil.getInstance().getPreviewSize(mParams.getSupportedPreviewSizes(), 600,
+            videoSize = CameraParamUtil.getInstance().getVideoSize(mParams.getSupportedPreviewSizes(), 540,
                     screenProp);
         } else {
-            videoSize = CameraParamUtil.getInstance().getPreviewSize(mParams.getSupportedVideoSizes(), 600,
+            videoSize = CameraParamUtil.getInstance().getVideoSize(mParams.getSupportedVideoSizes(), 540,
                     screenProp);
         }
-        Log.i(TAG, "setVideoSize    width = " + videoSize.width + "height = " + videoSize.height);
+
+        Log.i(TAG, "finally    width = " + videoSize.width + "height = " + videoSize.height);
         if (videoSize.width == videoSize.height) {
             mediaRecorder.setVideoSize(preview_width, preview_height);
         } else {
