@@ -64,6 +64,13 @@ class PreviewState implements State {
                 machine.setState(machine.getBorrowPictureState());
                 LogUtil.i("capture");
             }
+
+            @Override
+            public void captureError() {
+                machine.getView().takePictureError();
+                machine.getView().resetState(JCameraView.TYPE_PICTURE);
+                machine.setState(machine.getPreviewState());
+            }
         });
     }
 

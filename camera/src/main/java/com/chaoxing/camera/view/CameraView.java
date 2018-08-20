@@ -26,4 +26,6 @@ public interface CameraView {
     void startPreviewCallback();
 
     boolean handlerFoucs(float x, float y);
+
+    void takePictureError();
 }

@@ -734,4 +734,9 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         animSet.start();
         return true;
     }
+
+    @Override
+    public void takePictureError() {
+        CameraInterface.getInstance().doStartPreview(mVideoView.getHolder(), screenProp);
+    }
 }

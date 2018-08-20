@@ -40,6 +40,7 @@ public class CaptureLayout extends RelativeLayout {
     private View rlBtnContener1;
     private View rlBtnContener;
     private ImageView btnCancle1;
+    private boolean canTakePicture = true;
 
     public void setTypeLisenter(TypeListener typeLisenter) {
         this.typeLisenter = typeLisenter;
