@@ -123,6 +123,11 @@ public class CameraMachine implements State {
         state.zoom(zoom, type);
     }
 
+    @Override
+    public void onResume() {
+
+    }
+
     public State getState() {
         return this.state;
     }

@@ -37,4 +37,6 @@ public interface State {
     void confirm();
 
     void zoom(float zoom,int type);
+
+    void onResume();
 }

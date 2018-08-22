@@ -41,7 +41,6 @@ import com.chaoxing.camera.view.GlanceAndSelectImageView;
 import com.cjt2325.camera.R;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -84,6 +83,8 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     public static final int SHOW_MODE_DEFAULT = 0xFF00;
     public static final int SHOW_MODE_MORE_IMAGE = 0xFF01;
+
+    private int captureType = 0;    //拍完照显示模式 1：拍完回调
 
 
     //回调监听
@@ -326,7 +327,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         if (clacWidth > 800 && Math.abs(clacWidth - measuredWidth) > clacWidth * 0.1F) {  //计算的宽度大于 800 并且和显示正常的布局的误差超过10%
             layoutParams.width = (int) clacWidth;
             params.width = (int) clacWidth;
-        }else{
+        } else {
             return;
         }
 
@@ -356,17 +357,20 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     //生命周期onResume
     public void onResume() {
         LogUtil.i("JCameraView onResume");
-//        resetState(TYPE_DEFAULT); //重置状态
+        if (captureType == 1) {
+            machine.onResume();    //切换状态机为预览模式
+        }
+        resetState(TYPE_DEFAULT); //重置状态
         CameraInterface.getInstance().registerSensorManager(mContext);
         CameraInterface.getInstance().setSwitchView(mSwitchCamera);
-//        machine.start(mVideoView.getHolder(), screenProp);
+        machine.start(mVideoView.getHolder(), screenProp);
     }
 
     //生命周期onPause
     public void onPause() {
         LogUtil.i("JCameraView onPause");
-//        stopVideo();
-//        resetState(TYPE_PICTURE);
+        stopVideo();
+        resetState(TYPE_PICTURE);
         CameraInterface.getInstance().isPreview(false);
         CameraInterface.getInstance().unregisterSensorManager(mContext);
     }
@@ -588,6 +592,10 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     @Override
     public void showPicture(Bitmap bitmap, boolean isVertical) {
+        if (captureType == 1) {  //拍完后回调
+            jCameraLisenter.onQuickCapture(bitmap);
+            return;
+        }
         if (isVertical) {
             mPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
         } else {
@@ -608,6 +616,10 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 ToastUtils.showShortText(mContext, "未知错误!");
             }
         }
+    }
+
+    public void setCaptureType(int captureType) {
+        this.captureType = captureType;
     }
 
     private String getImageFileNameByData() {
@@ -737,6 +749,8 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     @Override
     public void takePictureError() {
-        CameraInterface.getInstance().doStartPreview(mVideoView.getHolder(), screenProp);
+        if (errorLisenter != null) {
+            errorLisenter.onError();
+        }
     }
 }

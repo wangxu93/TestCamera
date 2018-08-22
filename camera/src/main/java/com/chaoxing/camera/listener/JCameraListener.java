@@ -25,4 +25,6 @@ public interface JCameraListener {
 
     void editImage(Bitmap bitmap);
 
+    void onQuickCapture(Bitmap bitmap);
+
 }

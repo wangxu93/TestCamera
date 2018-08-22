@@ -82,4 +82,9 @@ public class BorrowPictureState implements State {
         LogUtil.i(TAG, "zoom");
     }
 
+    @Override
+    public void onResume() {
+        machine.setState(machine.getPreviewState());
+    }
+
 }

@@ -68,7 +68,7 @@ class PreviewState implements State {
             @Override
             public void captureError() {
                 machine.getView().takePictureError();
-                machine.getView().resetState(JCameraView.TYPE_PICTURE);
+                machine.getView().resetState(JCameraView.TYPE_DEFAULT);
                 machine.setState(machine.getPreviewState());
             }
         });
@@ -108,5 +108,10 @@ class PreviewState implements State {
     public void zoom(float zoom, int type) {
         LogUtil.i(TAG, "zoom");
         CameraInterface.getInstance().setZoom(zoom, type);
+    }
+
+    @Override
+    public void onResume() {
+
     }
 }

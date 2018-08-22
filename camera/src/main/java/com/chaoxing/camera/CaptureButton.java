@@ -220,6 +220,7 @@ public class CaptureButton extends View {
 
     //录制结束
     private void recordEnd() {
+        resetRecordAnim();  //重制按钮状态
         if (captureLisenter != null) {
             if (recorded_time < min_duration) {
                 if (button_state != BUTTON_STATE_ONLY_CAPTURE) {  //仅为拍照模式的时候不处理
@@ -228,7 +229,7 @@ public class CaptureButton extends View {
             }else
                 captureLisenter.recordEnd(recorded_time);  //回调录制结束
         }
-        resetRecordAnim();  //重制按钮状态
+
     }
 
     //重制状态
@@ -259,9 +260,9 @@ public class CaptureButton extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                state = STATE_BAN;
                 //回调拍照接口
                 captureLisenter.takePictures();
-                state = STATE_BAN;
             }
         });
         inside_anim.setDuration(100);

@@ -82,4 +82,9 @@ public class BorrowVideoState implements State {
     public void zoom(float zoom, int type) {
         LogUtil.i(TAG, "zoom");
     }
+
+    @Override
+    public void onResume() {
+
+    }
 }
