@@ -377,8 +377,8 @@ public class CameraInterface implements Camera.PreviewCallback {
 
                 if (CameraParamUtil.getInstance().isSupportedFocusMode(
                         mParams.getSupportedFocusModes(),
-                        Camera.Parameters.FOCUS_MODE_AUTO)) {
-                    mParams.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+                        Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+                    mParams.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 }
                 if (CameraParamUtil.getInstance().isSupportedPictureFormats(mParams.getSupportedPictureFormats(),
                         ImageFormat.JPEG)) {
@@ -709,7 +709,7 @@ public class CameraInterface implements Camera.PreviewCallback {
                 public void onAutoFocus(boolean success, Camera camera) {
                     if (success || handlerTime > 10) {
                         Camera.Parameters params = camera.getParameters();
-                        params.setFocusMode(currentFocusMode);
+                        params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
                         camera.setParameters(params);
                         handlerTime = 0;
                         callback.focusSuccess();
