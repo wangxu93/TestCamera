@@ -36,7 +36,7 @@ uploadArchives {
         repository(url: "http://192.168.98.164:8081/repository/chaoxing/") {
             authentication(userName: "chenxi", password: "chenxi@1")
         }
-        pom.version = "3.3.8"
+        pom.version = "3.3.9"
         pom.groupId = "com.cjt"
         pom.artifactId = "jcamera"
     }
