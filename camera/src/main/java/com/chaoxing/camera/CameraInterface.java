@@ -690,20 +690,20 @@ public class CameraInterface implements Camera.PreviewCallback {
         if (mCamera == null) {
             return;
         }
-        final Camera.Parameters params = mCamera.getParameters();
-        Rect focusRect = calculateTapArea(x, y, 1f, context);
-        mCamera.cancelAutoFocus();
-        if (params.getMaxNumFocusAreas() > 0) {
-            List<Camera.Area> focusAreas = new ArrayList<>();
-            focusAreas.add(new Camera.Area(focusRect, 800));
-            params.setFocusAreas(focusAreas);
-        } else {
-            Log.i(TAG, "focus areas not supported");
-            callback.focusSuccess();
-            return;
-        }
-        final String currentFocusMode = params.getFocusMode();
         try {
+            final Camera.Parameters params = mCamera.getParameters();
+            Rect focusRect = calculateTapArea(x, y, 1f, context);
+            mCamera.cancelAutoFocus();
+            if (params.getMaxNumFocusAreas() > 0) {
+                List<Camera.Area> focusAreas = new ArrayList<>();
+                focusAreas.add(new Camera.Area(focusRect, 800));
+                params.setFocusAreas(focusAreas);
+            } else {
+                Log.i(TAG, "focus areas not supported");
+                callback.focusSuccess();
+                return;
+            }
+            final String currentFocusMode = params.getFocusMode();
             params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
             mCamera.setParameters(params);
             mCamera.autoFocus(new Camera.AutoFocusCallback() {
