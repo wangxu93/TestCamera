@@ -28,7 +28,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation project(':camera')
-    implementation files('libs/LDBand_Android_V1.0.2.jar')
-    implementation files('libs/gson-2.7.jar')
 }
 

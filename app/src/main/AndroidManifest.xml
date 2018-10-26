@@ -4,15 +4,10 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
-    <uses-permission android:name="android.permission.DELETE_CACHE_FILES"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
@@ -29,25 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SendedActivity" />
-        <activity android:name=".MyBandActivity"/>
-        <service
-            android:name="com.landicorp.android.band.services.LDDeviceOperatorServices"
-            android:process=":ldbanddeviceservice">
-            <intent-filter>
-                <action android:name="com.landicorp.android.ldlklsdkcontroller.services.LDDeviceOperatorServices"/>
-            </intent-filter>
-        </service>
-        <service
-            android:name="com.landicorp.android.band.services.LDNotificationCenterMonitorService"
-            android:process=":ldbanddeviceservice"
-            android:label="@string/app_name"
-            android:protectionLevel="signature"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService"/>
-            </intent-filter>
-        </service>
+
     </application>
 
 

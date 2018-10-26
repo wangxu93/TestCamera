@@ -127,12 +127,17 @@ public class MainActivity extends AppCompatActivity {
             public void editImage(Bitmap bitmap) {
                 com.example.wangxu.testcamera.ToastUtils.showCenterText(MainActivity.this,bitmap.toString());
             }
+
+            @Override
+            public void onQuickCapture(Bitmap bitmap) {
+
+            }
         });
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,MyBandActivity.class));
+
             }
         });
 
