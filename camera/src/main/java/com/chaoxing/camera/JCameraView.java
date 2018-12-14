@@ -123,6 +123,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     private String defaultFilePath = Environment.getExternalStorageDirectory() + File.separator + "tempImages" + File.separator;
     private View rlBottonRoom;
     private boolean shouldStopVideo = true;
+    private boolean isEditing = false;
 
 
     public JCameraView(Context context) {
@@ -203,6 +204,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                     }
                 }, 1500 - time);*/
                 machine.stopRecord(true, time);
+                mSwitchCamera.setVisibility(INVISIBLE);
                 machine.capture();
             }
 
@@ -247,17 +249,20 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         mCaptureLayout.setTypeLisenter(new TypeListener() {
             @Override
             public void cancel() {
+                isEditing = false;
                 machine.cancle(mVideoView.getHolder(), screenProp);
                 selectImageView.setVisibility(GONE);
             }
 
             @Override
             public void confirm() {
+                isEditing = false;
                 machine.confirm();
             }
 
             @Override
             public void edit() {
+                isEditing = true;
                 if (jCameraLisenter != null) {
                     jCameraLisenter.editImage(captureBitmap);
                 }
@@ -360,17 +365,23 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         if (captureType == 1) {
             machine.onResume();    //切换状态机为预览模式
         }
-        resetState(TYPE_DEFAULT); //重置状态
+        if (!isEditing) {
+            resetState(TYPE_DEFAULT); //重置状态
+        }
         CameraInterface.getInstance().registerSensorManager(mContext);
         CameraInterface.getInstance().setSwitchView(mSwitchCamera);
-        machine.start(mVideoView.getHolder(), screenProp);
+        if (!isEditing) {
+            machine.start(mVideoView.getHolder(), screenProp);
+        }
     }
 
     //生命周期onPause
     public void onPause() {
         LogUtil.i("JCameraView onPause");
-        stopVideo();
-        resetState(TYPE_PICTURE);
+        if (!isEditing) {
+            stopVideo();
+            resetState(TYPE_PICTURE);
+        }
         CameraInterface.getInstance().isPreview(false);
         CameraInterface.getInstance().unregisterSensorManager(mContext);
     }

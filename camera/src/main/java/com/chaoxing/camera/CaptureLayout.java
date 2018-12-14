@@ -1,8 +1,5 @@
 package com.chaoxing.camera;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -105,6 +102,7 @@ public class CaptureLayout extends RelativeLayout {
         btnConfim.setVisibility(INVISIBLE);
         btnEdit.setVisibility(INVISIBLE);
     }
+
     public void startTypeBtnAnimator(boolean showEditBtn) {
         //拍照录制结果后的动画
         btn_capture.setVisibility(INVISIBLE);
@@ -114,6 +112,11 @@ public class CaptureLayout extends RelativeLayout {
 
         btnCancel.setClickable(true);
         btnConfim.setClickable(true);
+        if (showEditBtn) {
+            btnEdit.setVisibility(VISIBLE);
+        } else {
+            btnEdit.setVisibility(INVISIBLE);
+        }
 //        ObjectAnimator animator_cancel = ObjectAnimator.ofFloat(btnCancel, "translationX", layout_width / 4, 0);
 //        ObjectAnimator animator_confirm = ObjectAnimator.ofFloat(btnConfim, "translationX", -layout_width / 4, 0);
 //        ObjectAnimator animator_edit = ObjectAnimator.ofFloat(btnEdit, "alpha", 0f, 1f);
@@ -210,7 +213,7 @@ public class CaptureLayout extends RelativeLayout {
         btnCancel = (ImageView) rootView.findViewById(R.id.btnCancle);
         if (showMode == JCameraView.SHOW_MODE_DEFAULT) {
             btnCancel.setBackgroundResource(R.drawable.icon_camera_cancle_default);
-        }else {
+        } else {
             btnCancel.setBackgroundResource(R.drawable.icon_camera_cancle);
         }
         btnCancel.setOnClickListener(new OnClickListener() {
@@ -235,14 +238,14 @@ public class CaptureLayout extends RelativeLayout {
         });
 
         btnEdit = rootView.findViewById(R.id.btnEdit);
-//        btnEdit.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (typeLisenter != null) {
-//                    typeLisenter.edit();
-//                }
-//            }
-//        });
+        btnEdit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (typeLisenter != null) {
+                    typeLisenter.edit();
+                }
+            }
+        });
 
         btnBack = (ImageView) rootView.findViewById(R.id.btnBack);
         btnBack.setBackgroundResource(R.drawable.icon_camera_back);
@@ -262,18 +265,18 @@ public class CaptureLayout extends RelativeLayout {
         addView(rootView);
     }
 
-    private void setButtonCancelStyle(int showMode){
+    private void setButtonCancelStyle(int showMode) {
         if (btnCancel == null) {
             return;
         }
         if (showMode == JCameraView.SHOW_MODE_DEFAULT) {
             btnCancel.setBackgroundResource(R.drawable.icon_camera_cancle_default);
-        }else {
+        } else {
             btnCancel.setBackgroundResource(R.drawable.icon_camera_cancle);
         }
     }
 
-    public void setShowMode(int mode){
+    public void setShowMode(int mode) {
         showMode = mode;
         setButtonCancelStyle(mode);
     }
@@ -301,11 +304,10 @@ public class CaptureLayout extends RelativeLayout {
     }
 
     /**
-     *
      * @param tip
-     * @param isShowNow  是否立刻下是修改信息
+     * @param isShowNow 是否立刻下是修改信息
      */
-    public void setTextWithAnimation(String tip,boolean isShowNow) {
+    public void setTextWithAnimation(String tip, boolean isShowNow) {
         txt_tip.setText(tip);
         if (isShowNow) {
             ObjectAnimator animator_txt_tip = ObjectAnimator.ofFloat(txt_tip, "alpha", 0f, 1f, 1f, 0f);
