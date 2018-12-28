@@ -17,8 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.chaoxing.camera.R;
 import com.chaoxing.camera.util.ToastUtils;
-import com.cjt2325.camera.R;
 
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class GlanceAndSelectImageView extends FrameLayout {
     }
 
     private void init() {
-        View rootView = LayoutInflater.from(mContext).inflate(R.layout.layout_glance_select, null);
+        View rootView = LayoutInflater.from(mContext).inflate(R.layout.study_jcamera_layout_glance_select, null);
         rvList = ((RecyclerView) rootView.findViewById(R.id.rvList));
         rvList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         adapter = new MyAdapter();
@@ -78,7 +78,7 @@ public class GlanceAndSelectImageView extends FrameLayout {
 
         @Override
         public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.lauyout_image_item, null);
+            View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.study_jcamera_lauyout_image_item, null);
             MyHolder holder = new MyHolder(rootView);
             return holder;
         }
@@ -88,14 +88,14 @@ public class GlanceAndSelectImageView extends FrameLayout {
             final Uri imgUrl = images.get(position);
             Glide.with(mContext).load(imgUrl).into(holder.ivItem);
             if (selectItems.contains(imgUrl)) {
-                holder.tvTag.setBackgroundResource(R.drawable.icon_image_select);
+                holder.tvTag.setBackgroundResource(R.drawable.study_jcamera_icon_image_select);
                 int i = selectItems.indexOf(imgUrl);
                 if (i >= 0 && i < images.size()) {
                     holder.tvTag.setText((i + 1) + "");
                 }
             } else {
                 holder.tvTag.setText("");
-                holder.tvTag.setBackgroundResource(R.drawable.icon_image_unselect);
+                holder.tvTag.setBackgroundResource(R.drawable.study_jcamera_icon_image_unselect);
             }
             holder.rlTvContainer.setOnClickListener(new OnClickListener() {
                 @Override

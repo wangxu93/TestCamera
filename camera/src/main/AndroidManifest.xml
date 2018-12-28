@@ -1,7 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cjt2325.camera">
+    package="com.chaoxing.camera">
 
-    <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="25" />
+
 </manifest>

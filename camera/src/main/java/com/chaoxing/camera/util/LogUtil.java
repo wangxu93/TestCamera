@@ -2,7 +2,8 @@ package com.chaoxing.camera.util;
 
 import android.util.Log;
 
-import static com.cjt2325.camera.BuildConfig.DEBUG;
+import static com.chaoxing.camera.BuildConfig.DEBUG;
+
 
 /**
  * =====================================

@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.chaoxing.camera.listener.CaptureListener;
 import com.chaoxing.camera.listener.ReturnListener;
 import com.chaoxing.camera.listener.TypeListener;
-import com.cjt2325.camera.R;
 
 
 /**
@@ -145,7 +144,7 @@ public class CaptureLayout extends RelativeLayout {
 
     private void initView(Context context) {
         setWillNotDraw(false);
-        View rootView = LayoutInflater.from(context).inflate(R.layout.layout_capture, null);
+        View rootView = LayoutInflater.from(context).inflate(R.layout.study_jcamera_layout_capture, null);
         btn_capture = (CaptureButton) rootView.findViewById(R.id.captureBtn);
         setButtonCancelStyle(showMode);
         btn_capture.setCaptureLisenter(new CaptureListener() {
@@ -212,9 +211,9 @@ public class CaptureLayout extends RelativeLayout {
 
         btnCancel = (ImageView) rootView.findViewById(R.id.btnCancle);
         if (showMode == JCameraView.SHOW_MODE_DEFAULT) {
-            btnCancel.setBackgroundResource(R.drawable.icon_camera_cancle_default);
+            btnCancel.setBackgroundResource(R.drawable.study_jcamera_icon_camera_cancle_default);
         } else {
-            btnCancel.setBackgroundResource(R.drawable.icon_camera_cancle);
+            btnCancel.setBackgroundResource(R.drawable.study_jcamera_icon_camera_cancle);
         }
         btnCancel.setOnClickListener(new OnClickListener() {
             @Override
@@ -226,7 +225,7 @@ public class CaptureLayout extends RelativeLayout {
             }
         });
         btnConfim = (ImageView) rootView.findViewById(R.id.btnSure);
-        btnConfim.setBackgroundResource(R.drawable.icon_camera_sure);
+        btnConfim.setBackgroundResource(R.drawable.study_jcamera_icon_camera_sure);
         btnConfim.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,7 +247,7 @@ public class CaptureLayout extends RelativeLayout {
         });
 
         btnBack = (ImageView) rootView.findViewById(R.id.btnBack);
-        btnBack.setBackgroundResource(R.drawable.icon_camera_back);
+        btnBack.setBackgroundResource(R.drawable.study_jcamera_icon_camera_back);
         btnBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -270,9 +269,9 @@ public class CaptureLayout extends RelativeLayout {
             return;
         }
         if (showMode == JCameraView.SHOW_MODE_DEFAULT) {
-            btnCancel.setBackgroundResource(R.drawable.icon_camera_cancle_default);
+            btnCancel.setBackgroundResource(R.drawable.study_jcamera_icon_camera_cancle_default);
         } else {
-            btnCancel.setBackgroundResource(R.drawable.icon_camera_cancle);
+            btnCancel.setBackgroundResource(R.drawable.study_jcamera_icon_camera_cancle);
         }
     }
 

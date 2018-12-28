@@ -2,24 +2,18 @@ package com.example.wangxu.testcamera;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 
 import com.chaoxing.camera.JCameraView;
 import com.chaoxing.camera.listener.ErrorListener;
@@ -33,7 +27,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private final int GET_PERMISSION_REQUEST = 100; //权限申请自定义码
     private JCameraView jCameraView;
-    private boolean granted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +37,9 @@ public class MainActivity extends AppCompatActivity {
         File homeFolder =
                 new File(Environment.getExternalStorageDirectory(), "chaoxing/chaoxingmobile/tempImages/");
 
-        Uri uri= Uri.fromFile(new File(homeFolder,takePhotofileName));
+        Uri uri = Uri.fromFile(new File(homeFolder, takePhotofileName));
 
         int width = getWindowManager().getDefaultDisplay().getWidth();
-        
 
 
         if (Build.VERSION.SDK_INT >= 19) {
@@ -65,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             decorView.setSystemUiVisibility(option);
         }
         jCameraView = (JCameraView) findViewById(R.id.jcameraview);
-        jCameraView.setDuration(3 *1000);
+        jCameraView.setDuration(3 * 1000);
 
 //设置视频保存路径
         jCameraView.setSaveVideoPath(Environment.getExternalStorageDirectory().getPath() + File.separator + "JCamera");
@@ -76,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 //设置视频质量
         jCameraView.setMediaQuality(JCameraView.MEDIA_QUALITY_MIDDLE);
-        jCameraView.setShowMode(JCameraView.SHOW_MODE_DEFAULT,5);
+        jCameraView.setShowMode(JCameraView.SHOW_MODE_DEFAULT, 5);
 
 //JCameraView监听
         jCameraView.setErrorLisenter(new ErrorListener() {
@@ -85,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 //打开Camera失败回调
                 Log.i("CJT", "open camera error");
             }
+
             @Override
             public void AudioPermissionError(String str) {
                 //没有录取权限回调
@@ -93,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void singerOptartionToast() {
-                ToastUtils.showText(MainActivity.this,"不能拍照哦");
+                ToastUtils.showText(MainActivity.this, "不能拍照哦");
             }
         });
 
@@ -110,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 //获取视频路径
                 Log.i("CJT", "url = " + url);
             }
+
             @Override
             public void quit() {
                 //退出按钮
@@ -125,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void editImage(Bitmap bitmap) {
-                com.example.wangxu.testcamera.ToastUtils.showCenterText(MainActivity.this,bitmap.toString());
+
             }
 
             @Override
@@ -137,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                jCameraView.setCaptureType(1);
             }
         });
 
@@ -168,9 +162,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (granted) {
-            jCameraView.onResume();
-        }
+        jCameraView.onResume();
+
     }
 
     @Override
@@ -188,14 +181,14 @@ public class MainActivity extends AppCompatActivity {
                     ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED &&
                     ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 //具有权限
-                granted = true;
+
             } else {
                 //不具有获取权限，需要进行权限申请
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.CAMERA}, GET_PERMISSION_REQUEST);
-                granted = false;
+
             }
         }
     }
@@ -226,9 +219,8 @@ public class MainActivity extends AppCompatActivity {
                     size++;
                 }
                 if (size == 0) {
-                    granted = true;
                     jCameraView.onResume();
-                }else{
+                } else {
                     Toast.makeText(this, "请到设置-权限管理中开启", Toast.LENGTH_SHORT).show();
                     finish();
                 }

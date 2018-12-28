@@ -18,7 +18,7 @@
             android:id="@+id/tvTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/icon_image_unselect"
+            android:background="@drawable/study_jcamera_icon_image_unselect"
             android:lineSpacingExtra="0px"
             android:textColor="#fff"
             android:textSize="13dp"

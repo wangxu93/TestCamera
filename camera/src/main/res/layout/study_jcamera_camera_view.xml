@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_sync_black_24dp"/>
+        android:src="@drawable/study_jcamera_ic_sync_black_24dp"/>
 
     <RelativeLayout
         android:id="@+id/rlBottonRoom"

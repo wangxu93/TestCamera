@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="iconSize" format="dimension"/>
-    <attr name="iconMargin" format="dimension"/>
-    <attr name="iconSrc" format="reference"/>
-    <attr name="duration_max" format="integer"/>
-    <declare-styleable name="JCameraView">
-        <attr name="iconSize"/>
-        <attr name="iconMargin"/>
-        <attr name="iconSrc"/>
-        <attr name="duration_max"/>
+    <attr name="study_jcamera_iconSize" format="dimension"/>
+    <attr name="study_jcamera_iconMargin" format="dimension"/>
+    <attr name="study_jcamera_iconSrc" format="reference"/>
+    <attr name="study_jcamera_duration_max" format="integer"/>
+    <declare-styleable name="study_jcamera_JCameraView">
+        <attr name="study_jcamera_iconSize"/>
+        <attr name="study_jcamera_iconMargin"/>
+        <attr name="study_jcamera_iconSrc"/>
+        <attr name="study_jcamera_duration_max"/>
     </declare-styleable>
 </resources>

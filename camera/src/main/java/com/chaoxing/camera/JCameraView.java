@@ -38,7 +38,6 @@ import com.chaoxing.camera.util.ToastUtils;
 import com.chaoxing.camera.util.Utils;
 import com.chaoxing.camera.view.CameraView;
 import com.chaoxing.camera.view.GlanceAndSelectImageView;
-import com.cjt2325.camera.R;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -138,13 +137,13 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         super(context, attrs, defStyleAttr);
         mContext = context;
         //get AttributeSet
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.JCameraView, defStyleAttr, 0);
-        iconSize = a.getDimensionPixelSize(R.styleable.JCameraView_iconSize, (int) TypedValue.applyDimension(
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.study_jcamera_JCameraView, defStyleAttr, 0);
+        iconSize = a.getDimensionPixelSize(R.styleable.study_jcamera_JCameraView_study_jcamera_iconSize, (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_SP, 35, getResources().getDisplayMetrics()));
-        iconMargin = a.getDimensionPixelSize(R.styleable.JCameraView_iconMargin, (int) TypedValue.applyDimension(
+        iconMargin = a.getDimensionPixelSize(R.styleable.study_jcamera_JCameraView_study_jcamera_iconMargin, (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_SP, 15, getResources().getDisplayMetrics()));
-        iconSrc = a.getResourceId(R.styleable.JCameraView_iconSrc, R.drawable.ic_sync_black_24dp);
-        duration = a.getInteger(R.styleable.JCameraView_duration_max, 10 * 1000);       //没设置默认为10s
+        iconSrc = a.getResourceId(R.styleable.study_jcamera_JCameraView_study_jcamera_iconSrc, R.drawable.study_jcamera_ic_sync_black_24dp);
+        duration = a.getInteger(R.styleable.study_jcamera_JCameraView_study_jcamera_duration_max, 10 * 1000);       //没设置默认为10s
         a.recycle();
         initData();
         initView();
@@ -160,7 +159,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     private void initView() {
         setWillNotDraw(false);
-        View view = LayoutInflater.from(mContext).inflate(R.layout.camera_view, this);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.study_jcamera_camera_view, this);
         mVideoView = (VideoView) view.findViewById(R.id.video_preview);
         mPhoto = (ImageView) view.findViewById(R.id.image_photo);
         mSwitchCamera = (ImageView) view.findViewById(R.id.image_switch);
